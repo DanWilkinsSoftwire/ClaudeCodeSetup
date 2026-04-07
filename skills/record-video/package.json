@@ -1,0 +1,9 @@
+{
+  "name": "record-video",
+  "version": "1.0.0",
+  "description": "Record browser video for PR reviews",
+  "main": "record.js",
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}
