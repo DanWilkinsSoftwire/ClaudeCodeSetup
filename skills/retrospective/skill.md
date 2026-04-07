@@ -19,4 +19,4 @@ For each item, classify as:
 
 Only propose changes for systemic issues. Be concrete — draft the actual rule text, skill, or process change rather than vague suggestions.
 
-After the user approves the retrospective changes, raise a PR with all the updates (docs, CLAUDE.md, settings, plans, skills, memory).
+After the user approves the retrospective changes, apply them and commit and push changes to both the project repo (if applicable) and the `~/.claude` repo.
