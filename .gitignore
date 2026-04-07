@@ -30,6 +30,12 @@ plugins/blocklist.json
 # Policy (machine-generated)
 policy-limits.json
 
+# Browser profiles
+jira-chrome-profile/
+
+# Skill dependencies
+skills/*/node_modules/
+
 # Memory (personal context — uncomment to include)
 # memory/
 # MEMORY.md
