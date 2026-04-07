@@ -9,6 +9,7 @@
 
 ## Git
 - Do not add Co-Authored-By lines to commit messages.
+- Keep commit messages to a single line — no description body.
 - `~/.claude` is a git repo. After making changes to files there (CLAUDE.md, settings, skills, memory), commit and push them.
 
 ## Parameters
