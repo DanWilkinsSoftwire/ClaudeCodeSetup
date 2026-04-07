@@ -5,16 +5,43 @@
   "permissions": {
     "allow": [
       "Bash(cd:*)",
-      "Bash(find:*)"
+      "Edit",
+      "Write",
+      "Glob",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git diff:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git fetch:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(git reset:*)",
+      "Bash(git merge:*)",
+      "Bash(npm install)",
+      "Bash(npx tsc:*)",
+      "Bash(gh api:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git worktree:*)",
+      "Bash(git pull:*)"
     ]
   },
-  "model": "sonnet[1m]",
+  "model": "opus[1m]",
   "enabledPlugins": {
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   },
+  "autoUpdatesChannel": "latest",
   "preferences": {
     "tmuxSplitPanes": true
   },
-  "teammateMode": "tmux",
-  "autoUpdatesChannel": "latest"
+  "teammateMode": "tmux"
 }
