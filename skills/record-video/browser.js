@@ -57,12 +57,12 @@ async function recordBrowser() {
   });
 
   const page = await context.newPage();
+  const loadStart = Date.now();
   await page.goto(recordUrl, { waitUntil: "networkidle" });
-
-  // Wait an extra moment for any client-side rendering to settle
   await page.waitForTimeout(500);
+  const loadSeconds = ((Date.now() - loadStart) / 1000).toFixed(1);
 
-  console.log(`Recording at ${recordUrl} — page loaded.`);
+  console.log(`Recording at ${recordUrl} — page loaded (${loadSeconds}s load time).`);
   console.log("Perform your actions, then close the browser window.");
 
   await new Promise((resolve) => {
@@ -84,11 +84,11 @@ async function recordBrowser() {
   console.log(`Video saved: ${webmPath}`);
 
   // Convert to mp4, trimming the initial white screen
-  await convertToMp4(webmPath, recordingsDir, baseName);
+  await convertToMp4(webmPath, recordingsDir, baseName, loadSeconds);
 }
 
-async function convertToMp4(webmPath, outputDirPath, baseName) {
-  console.log("Converting to mp4...");
+async function convertToMp4(webmPath, outputDirPath, baseName, trimSeconds) {
+  console.log(`Converting to mp4 (trimming first ${trimSeconds}s)...`);
   const ffmpegPath = require(path.join(SKILL_DIR, "node_modules", "@ffmpeg-installer", "ffmpeg")).path;
   const ffmpeg = require(path.join(SKILL_DIR, "node_modules", "fluent-ffmpeg"));
   ffmpeg.setFfmpegPath(ffmpegPath);
@@ -98,11 +98,11 @@ async function convertToMp4(webmPath, outputDirPath, baseName) {
   await new Promise((resolve, reject) => {
     ffmpeg(webmPath)
       .outputOptions([
-        "-ss", "1.5",       // trim the first 1.5s (white screen during page load)
+        "-ss", trimSeconds,
         "-c:v", "libx264",
         "-preset", "fast",
         "-crf", "23",
-        "-an",              // no audio
+        "-an",
       ])
       .output(mp4Path)
       .on("end", resolve)
