@@ -12,6 +12,6 @@ Used for all implementation work. Preserves main-agent context by delegating to 
 - Implement the spec
 
 ## Teardown
-- Run type checking: `npx tsc --noEmit`
+- Run the project's type check command
 - Do not commit yet — report back: what was built, what was verified, list of changed files, any caveats
 - Main agent then spawns a **reviewer** before committing

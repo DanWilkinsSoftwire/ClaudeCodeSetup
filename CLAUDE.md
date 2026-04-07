@@ -10,6 +10,11 @@
 - When implementing a multi-step plan, implement one step at a time and stop after each step for the user to review and commit before proceeding.
 - Do not proceed to the next step until the user explicitly approves.
 
+## Agent Processes
+- Agent process definitions live in `.claude/agents/`. Read the relevant file before spawning a subagent — it defines setup, process, and teardown steps.
+  - `implementor.md` — implementation work, does not commit until reviewed
+  - `reviewer.md` — validate changes post-implementation (read-only)
+
 ## Project Documentation
 - If a project has a `docs/` directory, read the relevant doc before making changes — do not duplicate its content in CLAUDE.md files.
 
