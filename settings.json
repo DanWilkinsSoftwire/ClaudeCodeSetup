@@ -1,0 +1,20 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(find:*)"
+    ]
+  },
+  "model": "sonnet[1m]",
+  "enabledPlugins": {
+    "figma@claude-plugins-official": true
+  },
+  "preferences": {
+    "tmuxSplitPanes": true
+  },
+  "teammateMode": "tmux",
+  "autoUpdatesChannel": "latest"
+}
