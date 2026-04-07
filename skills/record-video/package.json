@@ -4,8 +4,8 @@
   "description": "Record browser video for PR reviews",
   "main": "record.js",
   "dependencies": {
-    "@ffmpeg/ffmpeg": "^0.12.15",
-    "@ffmpeg/util": "^0.12.2",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "fluent-ffmpeg": "^2.1.3",
     "playwright": "^1.59.1"
   }
 }

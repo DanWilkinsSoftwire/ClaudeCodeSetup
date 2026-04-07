@@ -2,7 +2,8 @@ const { chromium } = require("playwright");
 const path = require("path");
 const fs = require("fs");
 
-const PROFILE_DIR = path.join(__dirname, "chrome-profile");
+const SKILL_DIR = __dirname;
+const PROFILE_DIR = path.join(SKILL_DIR, "chrome-profile");
 const command = process.argv[2]; // "open" or "record"
 const recordUrl = process.argv[3]; // URL for record mode
 const label = process.argv[4] || "recording"; // label for the video file
@@ -39,11 +40,7 @@ async function recordBrowser() {
   const recordingsDir = path.resolve(outputDir, "recordings");
   fs.mkdirSync(recordingsDir, { recursive: true });
 
-  // Playwright's recordVideo requires a non-persistent context, so we:
-  // 1. Launch persistent context to get cookies/storage
-  // 2. Extract state
-  // 3. Close it
-  // 4. Relaunch a normal context with that state + video recording
+  // Extract session from persistent profile
   console.log("Loading saved session...");
   const persistentContext = await chromium.launchPersistentContext(PROFILE_DIR, {
     headless: true,
@@ -61,7 +58,11 @@ async function recordBrowser() {
 
   const page = await context.newPage();
   await page.goto(recordUrl, { waitUntil: "networkidle" });
-  console.log(`Recording at ${recordUrl}...`);
+
+  // Wait an extra moment for any client-side rendering to settle
+  await page.waitForTimeout(500);
+
+  console.log(`Recording at ${recordUrl} — page loaded.`);
   console.log("Perform your actions, then close the browser window.");
 
   await new Promise((resolve) => {
@@ -69,40 +70,45 @@ async function recordBrowser() {
     browser.on("disconnected", resolve);
   });
 
-  const videoPath = await page.video().path();
-  await context.close().catch(() => {});
-  await browser.close().catch(() => {});
-
-  // Rename to descriptive name
+  // Save video — saveAs waits for the file to be fully written
   const timestamp = new Date()
     .toISOString()
     .replace(/T/g, "_")
     .replace(/:/g, "-")
     .slice(0, 19);
-  const webmName = `${label}_${timestamp}.webm`;
-  const webmPath = path.join(recordingsDir, webmName);
-  fs.renameSync(videoPath, webmPath);
+  const baseName = `${label}_${timestamp}`;
+  const webmPath = path.join(recordingsDir, `${baseName}.webm`);
+  await page.video().saveAs(webmPath);
+  await context.close().catch(() => {});
+  await browser.close().catch(() => {});
   console.log(`Video saved: ${webmPath}`);
 
-  // Convert to mp4
-  await convertToMp4(webmPath, recordingsDir, `${label}_${timestamp}`);
+  // Convert to mp4, trimming the initial white screen
+  await convertToMp4(webmPath, recordingsDir, baseName);
 }
 
-async function convertToMp4(webmPath, outputDir, baseName) {
+async function convertToMp4(webmPath, outputDirPath, baseName) {
   console.log("Converting to mp4...");
-  const { FFmpeg } = require("@ffmpeg/ffmpeg");
-  const { fetchFile } = require("@ffmpeg/util");
+  const ffmpegPath = require(path.join(SKILL_DIR, "node_modules", "@ffmpeg-installer", "ffmpeg")).path;
+  const ffmpeg = require(path.join(SKILL_DIR, "node_modules", "fluent-ffmpeg"));
+  ffmpeg.setFfmpegPath(ffmpegPath);
 
-  const ffmpeg = new FFmpeg();
-  await ffmpeg.load();
+  const mp4Path = path.join(outputDirPath, `${baseName}.mp4`);
 
-  const inputData = fs.readFileSync(webmPath);
-  await ffmpeg.writeFile("input.webm", new Uint8Array(inputData));
-  await ffmpeg.exec(["-i", "input.webm", "-c:v", "libx264", "-preset", "fast", "-crf", "23", "output.mp4"]);
-
-  const outputData = await ffmpeg.readFile("output.mp4");
-  const mp4Path = path.join(outputDir, `${baseName}.mp4`);
-  fs.writeFileSync(mp4Path, Buffer.from(outputData));
+  await new Promise((resolve, reject) => {
+    ffmpeg(webmPath)
+      .outputOptions([
+        "-ss", "1.5",       // trim the first 1.5s (white screen during page load)
+        "-c:v", "libx264",
+        "-preset", "fast",
+        "-crf", "23",
+        "-an",              // no audio
+      ])
+      .output(mp4Path)
+      .on("end", resolve)
+      .on("error", reject)
+      .run();
+  });
 
   // Clean up webm
   fs.unlinkSync(webmPath);
