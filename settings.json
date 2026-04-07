@@ -32,7 +32,8 @@
       "Bash(git ls-tree:*)",
       "Bash(git worktree:*)",
       "Bash(git pull:*)",
-      "Bash(node C:/Users/danwil/.claude/skills/get-jira-ticket/fetch.js:*)"
+      "Bash(node C:/Users/danwil/.claude/skills/get-jira-ticket/fetch.js:*)",
+      "Bash(node C:/Users/danwil/.claude/skills/record-video/browser.js:*)"
     ]
   },
   "model": "opus[1m]",
