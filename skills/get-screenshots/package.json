@@ -1,0 +1,9 @@
+{
+  "name": "get-screenshots",
+  "version": "1.0.0",
+  "description": "Take browser screenshots for PR reviews",
+  "main": "browser.js",
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}
