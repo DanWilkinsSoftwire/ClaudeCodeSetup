@@ -11,7 +11,7 @@ Parse the user's arguments to determine scope:
 - `--last N` — last N merged PRs in the current repo
 - `--pr NUMBER` — a specific PR (or comma-separated list)
 - `--since YYYY-MM-DD` — all PRs merged since that date
-- No args — since last review (read timestamp from `~/.claude/code-preferences/.last-review`; if empty, ask the user for a scope)
+- No args — since last review (read `~/.claude/code-preferences/.last-review`, which stores `repo: lastPRNumber` per repo. Get the current repo via `gh repo view --json nameWithOwner`, look up its last PR number, and fetch PRs after that. If the repo has no entry, ask the user for a scope.)
 
 ## Process
 
