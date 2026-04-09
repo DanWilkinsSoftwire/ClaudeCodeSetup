@@ -11,7 +11,9 @@ Analyze this conversation and produce a structured report with four sections:
 
 3. **Rule gaps** — situations where a CLAUDE.md rule or agent process instruction would have prevented a mistake or inefficiency. Draft the specific rule.
 
-4. **Other improvements** — anything else that would make the next similar conversation smoother.
+4. **Code preferences** — review the conversation for any generalizable conventions, patterns, or decisions that should be added to the code preferences library (`~/.claude/code-preferences/`). Read the index to avoid duplicates. Present candidates for approval.
+
+5. **Other improvements** — anything else that would make the next similar conversation smoother.
 
 For each item, classify as:
 - **Systemic** — will recur without a change
