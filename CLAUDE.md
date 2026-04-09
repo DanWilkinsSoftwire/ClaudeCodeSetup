@@ -24,6 +24,11 @@
   - `implementor.md` — implementation work, does not commit until reviewed
   - `reviewer.md` — validate changes post-implementation (read-only)
 
+## Code Preferences Library
+- Conventions and preferences are stored in `~/.claude/code-preferences/` as categorized `.md` files with a semantic index.
+- Use `/code-preferences` to selectively load relevant rules before reviewing or implementing code.
+- Use `/update-code-preferences` to extract new rules from PR reviews. Supports `--last N`, `--pr NUMBER`, `--since DATE`, or defaults to since-last-review.
+
 ## Project Documentation
 - If a project has a `docs/` directory, read the relevant doc before making changes — do not duplicate its content in CLAUDE.md files.
 
