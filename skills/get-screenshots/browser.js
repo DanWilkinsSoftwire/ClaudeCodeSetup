@@ -8,6 +8,10 @@ const command = process.argv[2]; // "open" or "screenshot"
 const screenshotUrl = process.argv[3]; // URL for screenshot mode
 const label = process.argv[4] || "screenshot"; // label for the image file
 const outputDir = process.argv[5] || process.cwd(); // where to save screenshots
+const viewportWidth = parseInt(process.argv[6], 10) || 1280; // viewport width
+const viewportHeight = parseInt(process.argv[7], 10) || 720; // viewport height
+const clickSelector = process.argv[8] || null; // optional: CSS selector to click before screenshot
+const clickCount = parseInt(process.argv[9], 10) || 1; // optional: how many times to click it
 
 async function openBrowser() {
   console.log("Launching browser with persistent profile...");
@@ -16,7 +20,7 @@ async function openBrowser() {
 
   const context = await chromium.launchPersistentContext(PROFILE_DIR, {
     headless: false,
-    viewport: { width: 1280, height: 720 },
+    viewport: { width: viewportWidth, height: viewportHeight },
   });
 
   const page = context.pages()[0] || (await context.newPage());
@@ -52,12 +56,19 @@ async function takeScreenshot() {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     storageState,
-    viewport: { width: 1280, height: 720 },
+    viewport: { width: viewportWidth, height: viewportHeight },
   });
 
   const page = await context.newPage();
   await page.goto(screenshotUrl, { waitUntil: "networkidle" });
   await page.waitForTimeout(500);
+
+  if (clickSelector) {
+    for (let i = 0; i < clickCount; i++) {
+      await page.locator(clickSelector).click();
+      await page.waitForTimeout(300);
+    }
+  }
 
   const timestamp = new Date()
     .toISOString()
@@ -84,7 +95,7 @@ async function main() {
     default:
       console.error("Usage:");
       console.error("  node browser.js open                    - Launch browser to log in");
-      console.error("  node browser.js screenshot <url> [label] [outputDir] - Take screenshot");
+      console.error("  node browser.js screenshot <url> [label] [outputDir] [width] [height] - Take screenshot");
       process.exit(1);
   }
 }

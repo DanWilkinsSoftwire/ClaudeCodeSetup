@@ -4,20 +4,20 @@
     "figma@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "C:\\Users\\danwil\\.claude\\plugins\\cache\\claude-plugins-official\\figma\\2.0.7",
-        "version": "2.0.7",
+        "installPath": "C:\\Users\\danwil\\.claude\\plugins\\cache\\claude-plugins-official\\figma\\2.1.7",
+        "version": "2.1.7",
         "installedAt": "2026-03-25T10:08:27.920Z",
-        "lastUpdated": "2026-04-07T10:24:15.529Z",
+        "lastUpdated": "2026-04-13T08:24:20.376Z",
         "gitCommitSha": "d5a23b08688169014e8ef1a45ca545847becffe2"
       }
     ],
     "frontend-design@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "C:\\Users\\danwil\\.claude\\plugins\\cache\\claude-plugins-official\\frontend-design\\ffe0ea94dd5f",
-        "version": "ffe0ea94dd5f",
+        "installPath": "C:\\Users\\danwil\\.claude\\plugins\\cache\\claude-plugins-official\\frontend-design\\ca3df3bcec39",
+        "version": "ca3df3bcec39",
         "installedAt": "2026-04-07T11:16:01.451Z",
-        "lastUpdated": "2026-04-07T13:51:54.460Z",
+        "lastUpdated": "2026-04-09T15:46:58.198Z",
         "gitCommitSha": "8a8eb0911cea2d60bb85dae5843514161d22977a"
       }
     ]
