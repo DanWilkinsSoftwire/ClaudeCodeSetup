@@ -32,6 +32,7 @@ policy-limits.json
 
 # Browser profiles
 jira-chrome-profile/
+skills/get-screenshots/chrome-profile/
 
 # Skill dependencies
 skills/*/node_modules/
